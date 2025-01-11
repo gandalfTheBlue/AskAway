@@ -3,10 +3,13 @@ import 'dotenv/config'
 
 const SLACK_BOT_USER_OAUTH_TOKEN = process.env.SLACK_BOT_USER_OAUTH_TOKEN
 const SLACK_SIGNING_SECRET = process.env.SLACK_SIGNING_SECRET
+const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN
 
 const app = new App({
   token: SLACK_BOT_USER_OAUTH_TOKEN,
   signingSecret: SLACK_SIGNING_SECRET,
+  appToken: SLACK_APP_TOKEN,
+  socketMode: true,
 })
 
 async function startBot() {
@@ -14,5 +17,14 @@ async function startBot() {
   await app.start(process.env.PORT || port)
   console.log('Bolt app started!!')
 }
+
+app.event('message', async ({ say }) => {
+  try {
+    say('Hello Human!')
+  } catch (error) {
+    console.log('err')
+    console.error(error)
+  }
+})
 
 startBot()
