@@ -1,5 +1,6 @@
 import { App } from '@slack/bolt'
 import 'dotenv/config'
+import { getChatGptResponse } from './openai'
 
 const SLACK_BOT_USER_OAUTH_TOKEN = process.env.SLACK_BOT_USER_OAUTH_TOKEN
 const SLACK_SIGNING_SECRET = process.env.SLACK_SIGNING_SECRET
@@ -18,9 +19,14 @@ async function startBot() {
   console.log('Bolt app started!!')
 }
 
-app.event('message', async ({ say }) => {
+app.event('message', async ({ say, message }) => {
   try {
-    say('Hello Human!')
+    // @ts-ignore
+    const text = message.text
+    if (text.startsWith('<@U087TLPUX17>')) {
+      const response = await getChatGptResponse()
+      say(response)
+    }
   } catch (error) {
     console.log('err')
     console.error(error)

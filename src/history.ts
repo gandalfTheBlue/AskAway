@@ -1,31 +1,26 @@
-import { App } from '@slack/bolt'
 import { WebClient } from '@slack/web-api'
 import 'dotenv/config'
 
-const CHANNEL_ID = 'C087EQZ1SFM'
 const SLACK_BOT_USER_OAUTH_TOKEN = process.env.SLACK_BOT_USER_OAUTH_TOKEN
-const SLACK_SIGNING_SECRET = process.env.SLACK_SIGNING_SECRET
 
-const app = new App({
-  token: SLACK_BOT_USER_OAUTH_TOKEN,
-  signingSecret: SLACK_SIGNING_SECRET,
-})
-
-// Function to get channel history
-async function getChannelHistory(channelId) {
-  // Initialize
+export async function getChannelHistory() {
+  const CHANNEL_ID = 'C087EQZ1SFM'
   const web = new WebClient(SLACK_BOT_USER_OAUTH_TOKEN)
   try {
-    // Call the conversations.history method using WebClient
     const result = await web.conversations.history({
-      channel: channelId,
+      channel: CHANNEL_ID,
     })
 
-    console.log('Channel History:', result.messages)
+    return result.messages.map((message) => {
+      return {
+        user: message.user,
+        type: message.type,
+        text: message.text,
+      }
+    })
   } catch (error) {
     console.error('Error fetching channel history:', error)
   }
 }
 
-// Call the function
-getChannelHistory(CHANNEL_ID)
+getChannelHistory()

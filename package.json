@@ -4,13 +4,15 @@
   "main": "index.js",
   "scripts": {
     "history": "ts-node ./src/history.ts",
-    "bot": "ts-node ./src/bot.ts"
+    "bot": "ts-node ./src/bot.ts",
+    "chat": "ts-node ./src/openai.ts"
   },
   "license": "MIT",
   "dependencies": {
     "@slack/bolt": "^4.2.0",
     "@slack/web-api": "^7.8.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "openai": "^4.78.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
